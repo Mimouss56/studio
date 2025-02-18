@@ -13,20 +13,16 @@ public class DatabasePackMetadata {
     private String description;
     private String thumbnail;
     private boolean official;
-    private Number ageMin;
-    private Number ageMax;
 
     public DatabasePackMetadata() {
     }
 
-    public DatabasePackMetadata(String uuid, String title, String description, String thumbnail, boolean official, Number ageMin, Number ageMax) {
+    public DatabasePackMetadata(String uuid, String title, String description, String thumbnail, boolean official) {
         this.uuid = uuid;
         this.title = title;
         this.description = description;
         this.thumbnail = thumbnail;
         this.official = official;
-        this.ageMin = ageMin;
-        this.ageMax = ageMax;
     }
 
     @Override
@@ -36,9 +32,7 @@ public class DatabasePackMetadata {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", thumbnail='" + thumbnail + '\'' +
-                ", official=" + official + '\'' +
-                ", ageMin=" + ageMin + '\'' +
-                ", ageMax=" + ageMax + 
+                ", official=" + official +
                 '}';
     }
 
@@ -81,18 +75,4 @@ public class DatabasePackMetadata {
     public void setOfficial(boolean official) {
         this.official = official;
     }
-
-    public Number getAgeMin() {
-        return ageMin;
-    }
-
-    public void setAgeMin(Number ageMin) {
-        this.ageMin = ageMin;
-    }
-
-    public Number getAgeMax() {
-        return ageMax;
-    }
-
-    
 }
