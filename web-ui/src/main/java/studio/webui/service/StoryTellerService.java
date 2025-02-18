@@ -478,9 +478,6 @@ public class StoryTellerService implements IStoryTellerService {
                         .put("image", metadata.getThumbnail())
                         .put("sectorSize", pack.getSizeInSectors())
                         .put("official", metadata.isOfficial())
-                        .put("ageMin", metadata.getAgeMin())
-                        .put("ageMax", metadata.getAgeMax())
-
                 )
                 .orElse(new JsonObject()
                         .put("uuid", pack.getUuid().toString())
@@ -502,8 +499,6 @@ public class StoryTellerService implements IStoryTellerService {
                         .put("sizeInBytes", pack.getSizeInBytes())
                         .put("official", metadata.isOfficial())
                         .put("nightModeAvailable", pack.isNightModeAvailable())
-                        .put("ageMin", metadata.getAgeMin())
-                        .put("ageMax", metadata.getAgeMax())
                 )
                 .orElse(new JsonObject()
                         .put("uuid", pack.getUuid().toString())
@@ -511,8 +506,6 @@ public class StoryTellerService implements IStoryTellerService {
                         .put("version", pack.getVersion())
                         .put("folderName", pack.getFolderName())
                         .put("sizeInBytes", pack.getSizeInBytes())
-                        .put("ageMin", pack.getAgeMin())
-                        .put("ageMax", pack.getAgeMax())
                 );
     }
 
