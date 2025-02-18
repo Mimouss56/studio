@@ -15,11 +15,13 @@ public class FsStoryPackInfos {
     private short version;
     private long sizeInBytes;
     private boolean nightModeAvailable;
+    private Number ageMin;
+    private Number ageMax;
 
     public FsStoryPackInfos() {
     }
 
-    public FsStoryPackInfos(UUID uuid, String folderName, short version, long sizeInBytes, boolean nightModeAvailable) {
+    public FsStoryPackInfos(UUID uuid, String folderName, short version, long sizeInBytes, boolean nightModeAvailable, Number ageMin, Number ageMax) {
         this.uuid = uuid;
         this.folderName = folderName;
         this.version = version;
@@ -69,6 +71,22 @@ public class FsStoryPackInfos {
         this.nightModeAvailable = nightModeAvailable;
     }
 
+    public Number getAgeMin() {
+        return ageMin;
+    }
+
+    public void setAgeMin(Number ageMin) {
+        this.ageMin = ageMin;
+    }
+
+    public Number getAgeMax() {
+        return ageMax;
+    }
+
+    public void setAgeMax(Number ageMax) {
+        this.ageMax = ageMax;
+    }
+
     @Override
     public String toString() {
         return "FsStoryPackInfos{" +
@@ -77,6 +95,8 @@ public class FsStoryPackInfos {
                 ", version=" + version +
                 ", sizeInBytes=" + sizeInBytes +
                 ", nightModeAvailable=" + nightModeAvailable +
+                ", ageMin=" + ageMin +
+                ", ageMax=" + ageMax +
                 '}';
     }
 }
