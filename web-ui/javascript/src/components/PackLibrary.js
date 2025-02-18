@@ -59,7 +59,10 @@ class PackLibrary extends React.Component {
             confirmConversionDialog: {
                 show: false,
                 data: null
-            }
+            },
+            searchTerm: null,
+            ageMinFilter: 0,
+            ageMaxFilter: 12
         };
     }
 
@@ -327,6 +330,25 @@ class PackLibrary extends React.Component {
         this.props.loadSampleInEditor();
     };
 
+    applyFilters = () => {
+        const { searchTerm, ageMinFilter, ageMaxFilter } = this.state;
+
+        const filteredLibraryPacks = this.props.library.packs.filter((group) => {
+            console.log("group: %o", group);
+            const matchesSearch =
+                group.packs[0].uuid.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                group.uuid.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesAge = group.packs[0].ageMin >= ageMinFilter && group.packs[0].ageMin <= ageMaxFilter;
+            return matchesAge && matchesSearch;
+        });
+        this.setState({
+            library: {
+                ...this.state.metadata,
+                packs: filteredLibraryPacks
+            }
+        });
+    };
+
     render() {
         const { t } = this.props;
         let storagePercentage = null;
@@ -489,8 +511,56 @@ class PackLibrary extends React.Component {
                         <input type="file" id="upload" style={{visibility: 'hidden', position: 'absolute'}} onChange={this.packAddFileSelected} />
                         <span title={t('library.local.addPack')} className="btn btn-default glyphicon glyphicon-import" onClick={this.showAddFileSelector}/>
                         <div className="editor-actions">
-                            <p><button className="library-action" onClick={this.onCreateNewPackInEditor}>{t('library.local.empty.link1')}</button> <button className="library-action" onClick={this.onOpenSamplePackInEditor}>{t('library.local.empty.link2')}</button> {t('library.local.empty.suffix')}</p>
+                            <p>
+                                <button className="library-action" onClick={this.onCreateNewPackInEditor}>{t('library.local.empty.link1')}</button> <button className="library-action" onClick={this.onOpenSamplePackInEditor}>{t('library.local.empty.link2')}</button> {t('library.local.empty.suffix')}
+                            </p>
                         </div>
+                        <div className="filter-menu">
+                            <div className="filter-section">
+
+                                {/* <div className="search-box">
+                                    <label htmlFor="search">Rechercher (titre ou UUID)</label>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={this.state.searchTerm}
+                                        onChange={(e) => this.setState({ searchTerm: e.target.value }, this.applyFilters)}
+                                        placeholder="Rechercher..."
+                                    />
+                                </div> */}
+                                <form class="form-inline">
+                                    <div className="form-group">
+                                        <label className="sr-only" for="age-min">Age minimum</label>
+                                        <div className="input-group">
+                                            <div className="input-group-addon">Age Min :</div>
+                                            <input
+                                                type="number"
+                                                id="age-min"
+                                                min="0"
+                                                max="12"
+                                                value={this.state.ageMinFilter}
+                                                onChange={(e) => this.setState({ ageMinFilter: e.target.value }, this.applyFilters)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="sr-only" for="age-max">Age maximum</label>
+                                        <div className="input-group">
+                                            <div className="input-group-addon">Age Max :</div>
+                                            <input
+                                                type="number"
+                                                id="age-max"
+                                                min="0"
+                                                max="12"
+                                                value={this.state.ageMaxFilter}
+                                                onChange={(e) => this.setState({ ageMaxFilter: e.target.value }, this.applyFilters)}
+                                            />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                     <div className={`library-dropzone ${this.state.dragging === 'device-pack' ? 'highlighted-dropzone' : ''}`}
                          onDrop={this.onDropPackIntoLibrary}
