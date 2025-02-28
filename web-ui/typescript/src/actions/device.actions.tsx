@@ -5,10 +5,11 @@ import IssueReportToast from "../components/IssueReportToast";
 import { useTranslation } from 'react-i18next';
 import { DevicePackInfos } from '../../@types/pack';
 import { FsDeviceInfos } from '../../@types/device';
+import { DispatchProp } from 'react-redux';
 
 const mutex = withTimeout(new Mutex(), 100);
 
-export const devicePlugged = (metadata:FsDeviceInfos) => ({
+export const devicePlugged = (metadata: FsDeviceInfos) => ({
     type: 'DEVICE_PLUGGED',
     metadata
 });
@@ -17,7 +18,7 @@ export const deviceUnplugged = () => ({
     type: 'DEVICE_UNPLUGGED'
 });
 
-export const setDevicePacks = (packs:DevicePackInfos[]) => ({
+export const setDevicePacks = (packs: DevicePackInfos[]) => ({
     type: 'SET_DEVICE_PACKS',
     packs: packs
 });
@@ -25,50 +26,53 @@ export const setDevicePacks = (packs:DevicePackInfos[]) => ({
 export const actionCheckDevice = () => {
     return dispatch => mutex.acquire()
         .then(
-            release => {
+            async release => {
                 const { t } = useTranslation();
-
                 const toastId = toast(t('toasts.device.checking'), { autoClose: false });
-                return fetchDeviceInfos()
-                    .then(metadata => {
+                try {
+                    try {
+                        const metadata = await fetchDeviceInfos();
                         if (metadata && Object.keys(metadata).length > 0 && metadata.plugged) {
                             toast.update(toastId, { type: "info", render: t('toasts.device.plugged'), autoClose: 5000 });
                             dispatch(actionDevicePlugged(metadata));
                         } else {
                             toast.dismiss(toastId);
                         }
-                    })
-                    .catch(e => {
+                    } catch (e) {
                         console.error('failed to fetch device infos', e);
                         toast.update(toastId, { type: "error", render: <IssueReportToast content={t('toasts.device.checkingFailed')} error={e} />, autoClose: false });
-                    })
-                    .finally(() => {
-                        release();
-                    });
-            },
-            e => toast.error(t('toasts.device.busy')));
+                    }
+                } finally {
+                    release();
+                }
+            })
+        .catch(
+            () => {
+                const { t } = useTranslation();
+                return toast.error(t('toasts.device.busy'))
+            });
 };
 
-export const actionDevicePlugged = (metadata:FsDeviceInfos) => {
-    return dispatch => mutex.acquire()
+export const actionDevicePlugged = (metadata: FsDeviceInfos) => {
+    return (dispatch: (arg0: { type: string; metadata?: FsDeviceInfos; packs?: DevicePackInfos[]; }) => void) => mutex.acquire()
         .then(
-            release => {
+            async release => {
                 const { t } = useTranslation();
 
                 dispatch(devicePlugged(metadata));
                 const toastId = toast(t('toasts.device.fetching'), { autoClose: false });
-                return fetchDevicePacks()
-                    .then(packs => {
+                try {
+                    try {
+                        const packs = await fetchDevicePacks();
                         toast.update(toastId, { type: "info", render: t('toasts.device.fetched', { count: packs.length }), autoClose: 5000 });
                         dispatch(setDevicePacks(packs));
-                    })
-                    .catch(e => {
+                    } catch (e) {
                         console.error('failed to fetch device packs', e);
                         toast.update(toastId, { type: "error", render: <IssueReportToast content={t('toasts.device.fetchingFailed')} error={e} />, autoClose: false });
-                    })
-                    .finally(() => {
-                        release();
-                    });
+                    }
+                } finally {
+                    release();
+                }
             },
             () => {
                 const { t } = useTranslation();
@@ -77,10 +81,10 @@ export const actionDevicePlugged = (metadata:FsDeviceInfos) => {
             });
 };
 
-export const actionRefreshDevice = (t) => {
-    return dispatch => mutex.acquire()
+export const actionRefreshDevice = () => {
+    return (dispatch: (arg0: { type: string; metadata?: FsDeviceInfos; packs?: DevicePackInfos[]; }) => void) => mutex.acquire()
         .then(
-            release => {
+            async release => {
                 return fetchDeviceInfos()
                     .then(metadata => {
                         if (metadata && Object.keys(metadata).length > 0 && metadata.plugged) {
@@ -104,10 +108,11 @@ export const actionRefreshDevice = (t) => {
             });
 };
 
-export const actionAddFromLibrary = (uuid:string, path:string, format:string, driver, context) => {
-    return dispatch => mutex.acquire()
+export const actionAddFromLibrary = (uuid: string, path: string, format: string, driver: string, context: { eventBus: { registerHandler: (arg0: string, arg1: { (_, message: string): void; (error: any, message: any): void; }) => void; }; }) => {
+    return (dispatch: (arg0: (dispatch: DispatchProp) => Promise<void | undefined>) => void) => mutex.acquire()
         .then(
             release => {
+                const { t } = useTranslation();
                 if (driver !== format) {
                     console.error('pack format is not compatible with the device');
                     toast.error(t('toasts.device.notCompatible'));
@@ -117,15 +122,15 @@ export const actionAddFromLibrary = (uuid:string, path:string, format:string, dr
                     return addFromLibrary(uuid, path)
                         .then(resp => {
                             const transferId = resp.transferId;
-                            context.eventBus.registerHandler('storyteller.transfer.' + transferId + '.progress', (error, message) => {
+                            context.eventBus.registerHandler('storyteller.transfer.' + transferId + '.progress', (_, message) => {
                                 if (message.body.progress < 1) {
                                     toast.update(toastId, { progress: message.body.progress, autoClose: false });
                                 }
                             });
-                            context.eventBus.registerHandler('storyteller.transfer.' + transferId + '.done', (error, message) => {
+                            context.eventBus.registerHandler('storyteller.transfer.' + transferId + '.done', (_, message) => {
                                 if (message.body.success) {
                                     toast.update(toastId, { progress: null, type: "success", render: t('toasts.device.added'), autoClose: 5000 });
-                                    dispatch(actionRefreshDevice(t));
+                                    dispatch(actionRefreshDevice());
                                 } else {
                                     toast.update(toastId, { progress: null, type: "error", render: <IssueReportToast content={t('toasts.device.addingFailed')} />, autoClose: false });
                                 }
@@ -144,16 +149,17 @@ export const actionAddFromLibrary = (uuid:string, path:string, format:string, dr
             });
 };
 
-export const actionRemoveFromDevice = (uuid, t) => {
-    return dispatch => mutex.acquire()
+export const actionRemoveFromDevice = (uuid: string) => {
+    return (dispatch: (arg0: (dispatch: any) => Promise<void | undefined>) => void) => mutex.acquire()
         .then(
-            release => {
+            async release => {
+                const { t } = useTranslation();
                 const toastId = toast(t('toasts.device.removing'), { autoClose: false });
                 return removeFromDevice(uuid)
                     .then(resp => {
                         if (resp.success) {
                             toast.update(toastId, { type: "success", render: t('toasts.device.removed'), autoClose: 5000 });
-                            dispatch(actionRefreshDevice(t));
+                            dispatch(actionRefreshDevice());
                         } else {
                             toast.update(toastId, { type: "error", render: <IssueReportToast content={t('toasts.device.removingFailed')} />, autoClose: false });
                         }
@@ -167,14 +173,15 @@ export const actionRemoveFromDevice = (uuid, t) => {
                     });
             },
             e => {
+                const { t } = useTranslation();
                 toast.error(t('toasts.device.busy'));
             });
 };
 
-export const actionReorderOnDevice = (uuids, t) => {
-    return dispatch => mutex.acquire()
+export const actionReorderOnDevice = (uuids: string[]) => {
+    return (dispatch: (arg0: (dispatch: any) => Promise<void | undefined>) => void) => mutex.acquire()
         .then(
-            release => {
+            async release => {
                 const toastId = toast(t('toasts.device.reordering'), { autoClose: false });
                 return reorderPacks(uuids)
                     .then(resp => {

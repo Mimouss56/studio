@@ -5,13 +5,12 @@ import EventBus from 'vertx3-eventbus-client';
 import { EventBus as EventBusType } from 'vertx3-eventbus-client';
 import { useTranslation } from 'react-i18next';
 import { marked } from 'marked';
-import 'react-toastify/dist/ReactToastify.css';
 import Switch from "react-switch";
 import { AppContext } from './AppContext';
 import Modal from './components/Modal';
 import PackEditor from './components/diagram/PackEditor';
-import PackLibrary from './components/PackLibrary';
 import EditorPackViewer from "./components/viewer/EditorPackViewer";
+import { PackLibrary } from './components/PackLibrary';
 import { simplifiedSample } from "./utils/sample";
 import { generateFilename } from "./utils/packs";
 import { mapStateToProps, mapDispatchToProps } from './store/app';
@@ -149,7 +148,15 @@ const App = (props) => {
                         <span title={t('header.buttons.editor')} className={`btn glyphicon glyphicon-edit ${shown === 'editor' && 'active'}`} onClick={showEditor} />
                     </div>
                 </header>
-                {shown === 'library' && <PackLibrary />}
+                {shown === 'library' && <PackLibrary device={{
+                    metadata: undefined,
+                    packs: []
+                }} library={{
+                    metadata: undefined,
+                    packs: []
+                }} settings={{
+                    allowEnriched: false
+                }} />}
                 {shown === 'editor' && <PackEditor />}
             </div>
         </AppContext.Provider>

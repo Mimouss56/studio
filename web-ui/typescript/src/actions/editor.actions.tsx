@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 import IssueReportToast from "../components/IssueReportToast";
 import { StoryPack } from '../../@types/pack';
 import { t } from "i18next";
-import { setEditorDiagram, showEditor } from ".";
 import PackDiagramModel from "../components/diagram/models/PackDiagramModel";
 
 export const actionLoadPackInEditor = (packData:StoryPack, filename:string) => {
@@ -39,3 +38,18 @@ export const actionLoadSampleInEditor = () => {
         dispatch(showEditor());
     }
 };
+
+export const setEditorDiagram = (diagram, filename = null) => ({
+    type: 'SET_EDITOR_DIAGRAM',
+    diagram,
+    filename
+});
+
+export const setEditorFilename = (filename = null) => ({
+    type: 'SET_EDITOR_FILENAME',
+    filename
+});
+
+export const showEditor = () => ({
+    type: 'SHOW_EDITOR'
+});

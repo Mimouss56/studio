@@ -2,8 +2,13 @@ import { toast } from 'react-toastify';
 import { fetchLibraryInfos, fetchLibraryPacks, downloadFromLibrary, uploadToLibrary, convertInLibrary, removeFromLibrary } from '../services/library';
 import IssueReportToast from "../components/IssueReportToast";
 import { useTranslation } from 'react-i18next';
-import { setLibrary } from '.';
 import { LibraryPack } from '../../@types/pack';
+import { withTimeout, Mutex } from 'async-mutex';
+import { addToLibrary } from '../services/device';
+import { sortPacks } from '../utils/packs';
+
+const mutex = withTimeout(new Mutex(), 100);
+
 
 export const actionLoadLibrary = () => {
     return dispatch => {
@@ -83,6 +88,7 @@ interface LibraryResponse {
     success: boolean;
 }
 
+
 export const actionUploadToLibrary = (uuid: string, path: string, packData: LibraryPack) => {
     return dispatch => {
         const { t } = useTranslation();
@@ -111,6 +117,67 @@ export const actionUploadToLibrary = (uuid: string, path: string, packData: Libr
     }
 };
 
+
+export const actionAddToLibrary = (uuid: string, driver: string, context: any) => {
+    return dispatch => mutex.acquire()
+        .then(
+            release => {
+                const { t } = useTranslation();
+                const toastId = toast(t('toasts.library.adding'), { autoClose: false });
+                return addToLibrary(uuid, driver)
+                    .then(resp => {
+                        // Surveillance du progrès du transfert
+                        const transferId = resp.transferId;
+                        context.eventBus.registerHandler(`storyteller.transfer.${transferId}.progress`,
+                            (error: Error, message: any) => {
+                                console.log(`Received storyteller.transfer.${transferId}.progress event`);
+                                if (message.body.progress < 1) {
+                                    toast.update(toastId, {
+                                        progress: message.body.progress,
+                                        autoClose: false
+                                    });
+                                }
+                            }
+                        );
+
+                        context.eventBus.registerHandler(`storyteller.transfer.${transferId}.done`,
+                            (error: Error, message: any) => {
+                                console.log(`Received storyteller.transfer.${transferId}.done event`);
+                                if (message.body.success) {
+                                    toast.update(toastId, {
+                                        progress: null,
+                                        type: "success",
+                                        render: t('toasts.library.added'),
+                                        autoClose: 5000
+                                    });
+                                    dispatch(actionRefreshLibrary());
+                                } else {
+                                    toast.update(toastId, {
+                                        type: "error",
+                                        render: <IssueReportToast content={t('toasts.library.addingFailed')} />,
+                                        autoClose: false
+                                    });
+                                }
+                                release();
+                            }
+                        );
+                    })
+                    .catch(e => {
+                        console.error('failed to add pack to library', e);
+                        toast.update(toastId, {
+                            type: "error",
+                            render: <IssueReportToast content={t('toasts.library.addingFailed')} error={e} />,
+                            autoClose: false
+                        });
+                        release();
+                    });
+            },
+            () => {
+                const { t } = useTranslation();
+                toast.error(t('toasts.device.busy'));
+            }
+        );
+};
 export const actionConvertInLibrary = (uuid: string, path: string, format: string, allowEnriched: boolean) => {
     return dispatch => {
         const { t } = useTranslation();
@@ -151,3 +218,13 @@ export const actionRemoveFromLibrary = (path: string) => {
             });
     }
 };
+
+export const setLibrary = (metadata, packs: LibraryPack[]) => ({
+    type: 'SET_LIBRARY',
+    metadata,
+    packs: sortPacks(packs)
+});
+
+export const showLibrary = () => ({
+    type: 'SHOW_LIBRARY'
+});

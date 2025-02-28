@@ -1,15 +1,28 @@
-export interface FsDeviceInfos {
-  uuid: Uint8Array;
-  firmwareMajor: number;
-  firmwareMinor: number;
-  serialNumber: string;
-  sdCardSizeInBytes: number;
-  usedSpaceInBytes: number;
-  deviceKeyV3: FsDeviceKeyV3;
+export interface DeviceStorage {
+  size: number;
+  taken: number;
 }
 
-export interface FsDeviceKeyV3 {
-  aesKey: Uint8Array;
-  aesIv: Uint8Array;
-  bt: Uint8Array;
+export interface DeviceMetadata {
+  uuid: string;
+  serial: string;
+  firmware: string;
+  storage: DeviceStorage;
+  driver: string;
+  error?: boolean;
+}
+
+export interface DevicePack {
+  uuid: string;
+  title: string;
+  version: string;
+  format: string;
+  image?: string;
+  nightModeAvailable: boolean;
+  official: boolean;
+}
+
+export interface DeviceProps {
+  metadata: DeviceMetadata;
+  packs: DevicePack[];
 }
