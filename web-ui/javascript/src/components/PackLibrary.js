@@ -507,60 +507,70 @@ class PackLibrary extends React.Component {
                 {/* Local pack library */}
                 {this.state.library && <div className="local-library">
                     <div className="header">
-                        <h4>{t('library.local.title')}</h4>
-                        {this.state.library.metadata && <div><strong>{t('library.local.path')}</strong> {this.state.library.metadata.path}</div>}
-                        <div><strong>{t('library.local.packs.length')}</strong> {this.state.library.packs.length || '-'}</div>
-                        <input type="file" id="upload" style={{ visibility: 'hidden', position: 'absolute' }} onChange={this.packAddFileSelected} />
-                        <span title={t('library.local.addPack')} className="btn btn-default glyphicon glyphicon-import" onClick={this.showAddFileSelector} />
-                        <div className="editor-actions">
-                            <p>
-                                <button className="library-action" onClick={this.onCreateNewPackInEditor}>{t('library.local.empty.link1')}</button> <button className="library-action" onClick={this.onOpenSamplePackInEditor}>{t('library.local.empty.link2')}</button> {t('library.local.empty.suffix')}
-                            </p>
+                        <div>
+                            <h4>{t('library.local.title')}</h4>
+                            {this.state.library.metadata && <div><strong>{t('library.local.path')}</strong> {this.state.library.metadata.path}</div>}
+                            <div><strong>{t('library.local.packs.length')}</strong> {this.state.library.packs.length || '-'}</div>
+                            <input type="file" id="upload" style={{ visibility: 'hidden', position: 'absolute' }} onChange={this.packAddFileSelected} />
+                            <span title={t('library.local.addPack')} className="btn btn-default glyphicon glyphicon-import" onClick={this.showAddFileSelector} />
+                            <div className="editor-actions">
+                                <p>
+                                    <button className="library-action" onClick={this.onCreateNewPackInEditor}>{t('library.local.empty.link1')}</button>
+                                    <button className="library-action" onClick={this.onOpenSamplePackInEditor}>{t('library.local.empty.link2')}</button>
+                                    {t('library.local.empty.suffix')}
+                                </p>
+                            </div>
+
                         </div>
                         <div className="filter-menu">
-                            <div className="filter-section">
-
-                                <div className="search-box">
-                                    <label htmlFor="search">Rechercher (titre ou UUID)</label>
-                                    <input
-                                        type="text"
-                                        id="search"
-                                        value={this.state.searchTerm}
-                                        onChange={(e) => this.setState({ searchTerm: e.target.value }, this.applyFilters)}
-                                        placeholder="Rechercher..."
-                                    />
-                                </div>
-                                <form class="form-inline">
-                                    <div className="form-group">
-                                        <label className="sr-only" for="age-min">Age minimum</label>
-                                        <div className="input-group">
-                                            <div className="input-group-addon">Age Min :</div>
-                                            <input
-                                                type="number"
-                                                id="age-min"
-                                                min="0"
-                                                max="12"
-                                                value={this.state.ageMinFilter}
-                                                onChange={(e) => this.setState({ ageMinFilter: e.target.value }, this.applyFilters)}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="sr-only" for="age-max">Age maximum</label>
-                                        <div className="input-group">
-                                            <div className="input-group-addon">Age Max :</div>
-                                            <input
-                                                type="number"
-                                                id="age-max"
-                                                min="0"
-                                                max="12"
-                                                value={this.state.ageMaxFilter}
-                                                onChange={(e) => this.setState({ ageMaxFilter: e.target.value }, this.applyFilters)}
-                                            />
-                                        </div>
-                                    </div>
-                                </form>
+                            <h4>Recherche par ...</h4>
+                            <div className="search-box">
+                                <label htmlFor="search">titre ou UUID</label>
+                                <input
+                                    type="text"
+                                    id="search"
+                                    value={this.state.searchTerm}
+                                    onChange={(e) => this.setState({ searchTerm: e.target.value }, this.applyFilters)}
+                                    placeholder="Rechercher..."
+                                />
                             </div>
+                            <div className="form-inline">
+                                <div className="form-group">
+                                    <label className="sr-only" htmlFor="age-min">Age minimum</label>
+                                    <div className="input-group">
+                                        <div className="input-group-addon">Age Min :</div>
+                                        <input
+                                            type="number"
+                                            id="age-min"
+                                            min="0"
+                                            max="12"
+                                            value={this.state.ageMinFilter}
+                                            onChange={(e) => this.setState({ ageMinFilter: e.target.value }, this.applyFilters)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="sr-only" for="age-max">Age maximum</label>
+                                    <div className="input-group">
+                                        <div className="input-group-addon">Age Max :</div>
+                                        <input
+                                            type="number"
+                                            id="age-max"
+                                            min="0"
+                                            max="12"
+                                            value={this.state.ageMaxFilter}
+                                            onChange={(e) => this.setState({ ageMaxFilter: e.target.value }, this.applyFilters)}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className='filter-language'>
+                            <img src={`https://flagcdn.com/40x30/fr.png`} alt="flag_user" />
+                            <img src={`https://flagcdn.com/40x30/es.png`} alt="flag_user" />
+                            <img src={`https://flagcdn.com/40x30/nl.png`} alt="flag_user" />
+                            <img src={`https://flagcdn.com/40x30/uk.png`} alt="flag_user" />
                         </div>
 
                     </div>
