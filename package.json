@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/vertx3-eventbus-client": "^3.5.4"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2"
+  }
+}
