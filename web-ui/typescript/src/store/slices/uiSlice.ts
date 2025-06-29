@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { UIState, Notification, ModalProps } from '@/types/state';
 
+// Fonction utilitaire pour convertir les tableaux readonly en mutables
+const toMutableArray = <T>(array: readonly T[]): T[] => [...array];
+
 // État initial avec destructuration atomique
 const initialState: UIState = {
+  shown: null,
+  isLoading: false,
   sidebarCollapsed: false,
   notifications: [],
   modals: [],
@@ -45,13 +50,19 @@ export const uiSlice = createSlice({
     // Action atomique pour ajouter un modal avec destructuration
     addModal: (state, action: PayloadAction<ModalProps>) => {
       const { id, title, content, buttons, onClose } = action.payload;
-      state.modals.push({ id, title, content, buttons, onClose });
+      state.modals.push({ 
+        id, 
+        title, 
+        content, 
+        buttons: buttons ? toMutableArray(buttons) : undefined, 
+        onClose 
+      });
     },
 
     // Action atomique pour supprimer un modal avec destructuration
     removeModal: (state, action: PayloadAction<string>) => {
       const modalId = action.payload;
-      state.modals = state.modals.filter(modal => modal.id !== modalId);
+      state.modals = state.modals.filter((modal: ModalProps) => modal.id !== modalId);
     },
 
     // Action atomique pour effacer tous les modals avec destructuration

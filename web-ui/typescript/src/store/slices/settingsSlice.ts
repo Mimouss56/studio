@@ -23,7 +23,7 @@ export const settingsSlice = createSlice({
       if (announceOptOut !== undefined) state.announceOptOut = announceOptOut;
       if (allowEnriched !== undefined) state.allowEnriched = allowEnriched;
       if (language !== undefined) state.language = language;
-      if (theme !== undefined) state.theme = theme;
+      if (theme !== undefined && (theme === 'light' || theme === 'dark')) state.theme = theme;
       if (autoSave !== undefined) state.autoSave = autoSave;
       if (autoSaveInterval !== undefined) state.autoSaveInterval = autoSaveInterval;
     },
@@ -44,7 +44,7 @@ export const settingsSlice = createSlice({
     },
 
     // Action atomique pour définir le thème avec destructuration
-    setTheme: (state, action: PayloadAction<string>) => {
+    setTheme: (state, action: PayloadAction<'light' | 'dark'>) => {
       state.theme = action.payload;
     },
 

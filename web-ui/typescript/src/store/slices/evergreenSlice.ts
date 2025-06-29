@@ -11,7 +11,7 @@ const initialState: EvergreenState = {
 // Actions asynchrones avec destructuration atomique
 export const loadEvergreen = createAsyncThunk(
   'evergreen/loadEvergreen',
-  async (announceOptOut: boolean, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       // Simulation d'un chargement d'informations evergreen
       const response = await fetch('/api/evergreen');
@@ -19,6 +19,20 @@ export const loadEvergreen = createAsyncThunk(
       return data;
     } catch (error) {
       return rejectWithValue('Erreur lors du chargement des informations evergreen');
+    }
+  }
+);
+
+export const checkForUpdates = createAsyncThunk(
+  'evergreen/checkForUpdates',
+  async (_, { rejectWithValue }) => {
+    try {
+      // Simulation d'une vérification de mises à jour
+      const response = await fetch('/api/evergreen/check');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue('Erreur lors de la vérification des mises à jour');
     }
   }
 );

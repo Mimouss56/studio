@@ -4,6 +4,7 @@ import type { Action } from './index';
 export interface DeviceState {
   readonly isPlugged: boolean;
   readonly isMonitoring: boolean;
+  readonly isLoading: boolean;
   readonly deviceInfo?: DeviceInfo;
 }
 
@@ -98,7 +99,11 @@ export interface UIState {
   readonly shown: 'library' | 'editor' | null;
   readonly isLoading: boolean;
   readonly error?: string;
+  readonly sidebarCollapsed: boolean;
   readonly notifications: readonly Notification[];
+  readonly modals: readonly ModalProps[];
+  readonly loadingStates: Readonly<Record<string, boolean>>;
+  readonly errors: Readonly<Record<string, string>>;
 }
 
 export interface Notification {
@@ -107,10 +112,25 @@ export interface Notification {
   readonly message: string;
   readonly title?: string;
   readonly duration?: number;
+  readonly persistent?: boolean;
   readonly action?: {
     readonly label: string;
     readonly onClick: () => void;
   };
+}
+
+export interface ModalProps {
+  readonly id: string;
+  readonly title: string;
+  readonly content: string | React.ReactNode;
+  readonly buttons?: readonly ModalButton[];
+  readonly onClose?: () => void;
+}
+
+export interface ModalButton {
+  readonly label: string;
+  readonly variant?: 'primary' | 'secondary' | 'danger';
+  readonly onClick: () => void;
 }
 
 export interface ViewerState {

@@ -13,7 +13,7 @@ interface UseEventBusOptions {
 export const useEventBus = (options: UseEventBusOptions = {}): UseEventBusReturn => {
   const {
     url = 'http://localhost:8080/eventbus',
-    autoConnect = true,
+    autoConnect = false,
     onOpen,
     onClose,
     onError
@@ -25,31 +25,40 @@ export const useEventBus = (options: UseEventBusOptions = {}): UseEventBusReturn
   // Fonction de connexion atomique avec destructuration
   const connect = useCallback(() => {
     if (eventBusRef.current) {
-      eventBusRef.current.close();
+      return;
     }
 
-    const eventBus = new EventBus(url);
-    eventBusRef.current = eventBus;
+    try {
+      const eventBus = new EventBus(url);
+      eventBusRef.current = eventBus;
 
-    eventBus.onopen = () => {
-      setIsConnected(true);
-      onOpen?.();
-    };
+      eventBus.onopen = () => {
+        setIsConnected(true);
+        onOpen?.();
+      };
 
-    eventBus.onclose = () => {
-      setIsConnected(false);
-      onClose?.();
-    };
+      eventBus.onclose = () => {
+        setIsConnected(false);
+        eventBusRef.current = null;
+        onClose?.();
+      };
 
-    if (onError) {
-      eventBus.onerror = onError;
+      if (onError) {
+        eventBus.onerror = onError;
+      }
+    } catch (error) {
+      console.error('Erreur lors de la connexion EventBus:', error);
     }
   }, [url, onOpen, onClose, onError]);
 
   // Fonction de déconnexion atomique
   const disconnect = useCallback(() => {
     if (eventBusRef.current) {
-      eventBusRef.current.close();
+      try {
+        eventBusRef.current.close();
+      } catch (error) {
+        console.error('Erreur lors de la déconnexion EventBus:', error);
+      }
       eventBusRef.current = null;
       setIsConnected(false);
     }
@@ -61,14 +70,25 @@ export const useEventBus = (options: UseEventBusOptions = {}): UseEventBusReturn
     handler: (error: EventBusError, message: EventBusMessage) => void
   ) => {
     if (eventBusRef.current && isConnected) {
-      eventBusRef.current.registerHandler(address, handler);
+      try {
+        eventBusRef.current.registerHandler(address, handler);
+      } catch (error) {
+        console.error('Erreur lors de l\'enregistrement du handler:', error);
+      }
     }
   }, [isConnected]);
 
   // Connexion automatique au montage avec destructuration
   useEffect(() => {
     if (autoConnect) {
-      connect();
+      const timer = setTimeout(() => {
+        connect();
+      }, 100);
+
+      return () => {
+        clearTimeout(timer);
+        disconnect();
+      };
     }
 
     return () => {

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { DeviceState, DeviceInfo } from '@/types/state';
-import { ACTION_TYPES } from '@/constants';
 
 // État initial avec destructuration atomique
 const initialState: DeviceState = {
   isPlugged: false,
   isMonitoring: false,
+  isLoading: false,
   deviceInfo: undefined
 };
 

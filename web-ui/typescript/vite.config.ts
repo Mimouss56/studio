@@ -4,8 +4,7 @@ import path from 'path';
 
 // Configuration Vite avec destructuration atomique
 export default defineConfig({
-  plugins: [react()],
-  
+  plugins: [react()],  
   // Configuration des alias avec destructuration atomique
   resolve: {
     alias: {
@@ -50,7 +49,9 @@ export default defineConfig({
   // Configuration des variables d'environnement avec destructuration atomique
   define: {
     __DEV__: JSON.stringify(process.env.NODE_ENV === 'development'),
-    __PROD__: JSON.stringify(process.env.NODE_ENV === 'production')
+    __PROD__: JSON.stringify(process.env.NODE_ENV === 'production'),
+    global: 'globalThis',
+    'process.env': {}
   },
   
   // Configuration CSS avec destructuration atomique
@@ -74,6 +75,11 @@ export default defineConfig({
       'react-i18next',
       'bootstrap',
       'react-switch'
-    ]
+    ],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
   }
 }); 

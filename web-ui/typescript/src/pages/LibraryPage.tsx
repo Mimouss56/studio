@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { PackInfo, LibraryFilter } from '../types/state';
 import { BOOTSTRAP_CLASSES } from '../constants';
-import { selectLibrary } from '../store';
+import { useLibrary } from '../hooks/useLibrary';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
 
 // Interface pour les props de la page Library avec destructuration atomique
@@ -16,10 +15,19 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
   className = ''
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
-  // Sélecteurs Redux avec destructuration atomique
-  const { packs, isLoading, error, searchTerm, filter } = useSelector(selectLibrary);
+  // Utilisation du hook personnalisé pour la bibliothèque
+  const {
+    packs,
+    isLoading,
+    error,
+    searchTerm,
+    filter,
+    handleSearch,
+    handleFilter,
+    reloadLibrary,
+    clearLibraryError
+  } = useLibrary();
 
   // États locaux avec destructuration atomique
   const [selectedPack, setSelectedPack] = useState<PackInfo | null>(null);
@@ -31,7 +39,6 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
     ROW,
     COL,
     CARD,
-    CARD_HEADER,
     CARD_BODY,
     CARD_TITLE,
     CARD_TEXT,
@@ -48,22 +55,14 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
     ALERT_INFO
   } = BOOTSTRAP_CLASSES;
 
-  // Effet pour charger la bibliothèque avec destructuration atomique
-  useEffect(() => {
-    // TODO: Dispatch action pour charger la bibliothèque
-    console.log('Chargement de la bibliothèque...');
-  }, [dispatch]);
-
   // Fonctions de gestion avec destructuration atomique
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    // TODO: Dispatch action pour mettre à jour la recherche
-    console.log('Recherche:', value);
+    handleSearch(value);
   };
 
   const handleFilterChange = (newFilter: Partial<LibraryFilter>) => {
-    // TODO: Dispatch action pour mettre à jour le filtre
-    console.log('Filtre mis à jour:', newFilter);
+    handleFilter(newFilter);
   };
 
   const handlePackSelect = (pack: PackInfo) => {
@@ -101,6 +100,20 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
         <div className={`${ALERT} ${ALERT_DANGER}`} role="alert">
           <h4 className="alert-heading">{t('library.error.title')}</h4>
           <p>{error}</p>
+          <div className="d-flex gap-2 mt-3">
+            <button
+              className={`${BUTTON} ${BUTTON_PRIMARY}`}
+              onClick={reloadLibrary}
+            >
+              {t('library.error.retry')}
+            </button>
+            <button
+              className={`${BUTTON} ${BUTTON_OUTLINE_PRIMARY}`}
+              onClick={clearLibraryError}
+            >
+              {t('library.error.dismiss')}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -140,6 +153,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
                     placeholder={t('library.search.placeholder')}
                     value={searchTerm}
                     onChange={handleSearchChange}
+                    disabled={isLoading}
                   />
                 </div>
                 <div className={`${COL} col-md-3`}>
@@ -151,6 +165,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
                     className={FORM_CONTROL}
                     value={filter.sortBy}
                     onChange={(e) => handleFilterChange({ sortBy: e.target.value as any })}
+                    disabled={isLoading}
                   >
                     <option value="name">{t('library.sort.name')}</option>
                     <option value="date">{t('library.sort.date')}</option>
@@ -166,6 +181,7 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
                     className={FORM_CONTROL}
                     value={filter.sortOrder}
                     onChange={(e) => handleFilterChange({ sortOrder: e.target.value as any })}
+                    disabled={isLoading}
                   >
                     <option value="asc">{t('library.order.ascending')}</option>
                     <option value="desc">{t('library.order.descending')}</option>
@@ -293,4 +309,4 @@ export const LibraryPage: React.FC<LibraryPageProps> = ({
       )}
     </div>
   );
-}; 
+};

@@ -1,0 +1,225 @@
+{
+  "nav": {
+    "home": "Home",
+    "library": "Library",
+    "editor": "Editor",
+    "settings": "Settings"
+  },
+  "header": {
+    "title": "Studio",
+    "navigation": {
+      "library": "Library",
+      "editor": "Editor",
+      "settings": "Settings"
+    },
+    "device": {
+      "connected": "Connected",
+      "disconnected": "Disconnected"
+    },
+    "theme": {
+      "toggle": "Toggle theme"
+    }
+  },
+  "notifications": {
+    "eventbus": {
+      "title": "EventBus",
+      "connected": "EventBus connected successfully",
+      "disconnected": "EventBus disconnected",
+      "error": "EventBus connection error"
+    },
+    "device": {
+      "title": "Device",
+      "plugged": "Device plugged successfully",
+      "unplugged": "Device unplugged",
+      "failure": "Device failure"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "actions": "Actions"
+  },
+  "home": {
+    "title": "Welcome to Studio",
+    "subtitle": "Create and visualize your diagrams",
+    "description": "A modern application for creating and visualizing flow diagrams.",
+    "features": {
+      "title": "Features",
+      "editor": "Advanced diagram editor",
+      "library": "Template library",
+      "viewer": "Interactive viewer",
+      "export": "Multi-format export"
+    },
+    "gettingStarted": {
+      "title": "Getting Started",
+      "step1": "Browse the library",
+      "step2": "Create a new diagram",
+      "step3": "Use the editor",
+      "step4": "Visualize your creations"
+    }
+  },
+  "library": {
+    "title": "Library",
+    "loading": "Loading library...",
+    "error": {
+      "title": "Loading Error",
+      "message": "Unable to load library",
+      "retry": "Retry",
+      "dismiss": "Dismiss"
+    },
+    "empty": {
+      "title": "Empty Library",
+      "message": "No packs found in library",
+      "hint": "Start by creating your first diagram"
+    },
+    "search": {
+      "label": "Search",
+      "placeholder": "Search in library..."
+    },
+    "sort": {
+      "label": "Sort by",
+      "name": "Name",
+      "date": "Date",
+      "popularity": "Popularity"
+    },
+    "order": {
+      "label": "Order",
+      "ascending": "Ascending",
+      "descending": "Descending"
+    },
+    "actions": {
+      "create": "Create",
+      "import": "Import"
+    },
+    "pack": {
+      "by": "By",
+      "created": "Created on",
+      "open": "Open",
+      "details": "Details"
+    }
+  },
+  "editor": {
+    "title": "Editor",
+    "untitled": "Untitled",
+    "modified": "Modified",
+    "saving": "Saving...",
+    "actions": {
+      "save": "Save",
+      "saveAs": "Save As",
+      "export": "Export",
+      "undo": "Undo",
+      "redo": "Redo"
+    },
+    "palette": {
+      "title": "Palette",
+      "START": "Start",
+      "END": "End",
+      "DECISION": "Decision",
+      "PROCESS": "Process",
+      "INPUT": "Input",
+      "OUTPUT": "Output"
+    },
+    "properties": {
+      "title": "Properties",
+      "type": "Type",
+      "position": "Position",
+      "label": "Label"
+    },
+    "empty": {
+      "message": "No nodes in diagram",
+      "hint": "Use the palette to add elements"
+    }
+  },
+  "viewer": {
+    "title": "Viewer",
+    "controls": {
+      "play": "Play",
+      "pause": "Pause",
+      "stop": "Stop"
+    },
+    "progress": {
+      "step": "Step"
+    },
+    "empty": {
+      "message": "No diagram to view",
+      "hint": "Open a diagram from the library"
+    },
+    "current": {
+      "step": "Current step",
+      "type": "Type"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "actions": {
+      "export": "Export",
+      "import": "Import",
+      "reset": "Reset"
+    },
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "editor": "Editor",
+      "notifications": "Notifications",
+      "about": "About"
+    },
+    "general": {
+      "title": "General Settings",
+      "language": "Language",
+      "theme": "Theme"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "info": "Customize the application appearance",
+      "animations": "Animations",
+      "animations.description": "Enable animations and transitions"
+    },
+    "editor": {
+      "title": "Editor",
+      "autoSave": "Auto Save",
+      "autoSave.description": "Automatically save changes",
+      "autoSaveInterval": "Save interval",
+      "seconds": "seconds",
+      "minute": "minute",
+      "minutes": "minutes"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "announceOptOut": "Disable announcements",
+      "announceOptOut.description": "Do not show system announcements",
+      "allowEnriched": "Allow enriched content",
+      "allowEnriched.description": "Allow notifications with enriched content"
+    },
+    "about": {
+      "title": "About",
+      "application": "Studio",
+      "description": "Modern application for creating and visualizing flow diagrams.",
+      "license": "License",
+      "license.description": "This application is distributed under Mozilla Public License 2.0.",
+      "copyright": "© 2024 Studio. All rights reserved."
+    },
+    "reset": {
+      "title": "Reset Settings",
+      "warning": "This action is irreversible",
+      "confirmation": "Are you sure you want to reset all settings?",
+      "confirm": "Reset"
+    }
+  }
+} 

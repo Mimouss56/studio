@@ -1,6 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { EditorState, DiagramModel, DiagramNode, DiagramLink } from '@/types/state';
 
+// Fonctions utilitaires pour convertir les tableaux readonly en mutables
+const toMutableArray = <T>(array: readonly T[]): T[] => [...array];
+const toMutableDiagram = (diagram: DiagramModel) => ({
+  ...diagram,
+  nodes: toMutableArray(diagram.nodes),
+  links: toMutableArray(diagram.links),
+  metadata: diagram.metadata ? { ...diagram.metadata } : undefined
+});
+
 // État initial avec destructuration atomique
 const initialState: EditorState = {
   diagram: {
@@ -41,7 +50,7 @@ export const editorSlice = createSlice({
     // Action atomique pour définir le diagramme avec destructuration
     setEditorDiagram: (state, action: PayloadAction<{ diagram: DiagramModel; filename: string }>) => {
       const { diagram, filename } = action.payload;
-      state.diagram = diagram;
+      state.diagram = toMutableDiagram(diagram);
       state.filename = filename;
       state.isModified = false;
     },
@@ -52,9 +61,9 @@ export const editorSlice = createSlice({
       
       if (id) state.diagram.id = id;
       if (name) state.diagram.name = name;
-      if (nodes) state.diagram.nodes = nodes;
-      if (links) state.diagram.links = links;
-      if (metadata) state.diagram.metadata = metadata;
+      if (nodes) state.diagram.nodes = toMutableArray(nodes);
+      if (links) state.diagram.links = toMutableArray(links);
+      if (metadata) state.diagram.metadata = { ...metadata };
       
       state.isModified = true;
     },

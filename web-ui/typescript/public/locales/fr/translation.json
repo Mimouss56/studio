@@ -1,0 +1,225 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "library": "Bibliothèque",
+    "editor": "Éditeur",
+    "settings": "Paramètres"
+  },
+  "header": {
+    "title": "Studio",
+    "navigation": {
+      "library": "Bibliothèque",
+      "editor": "Éditeur",
+      "settings": "Paramètres"
+    },
+    "device": {
+      "connected": "Connecté",
+      "disconnected": "Déconnecté"
+    },
+    "theme": {
+      "toggle": "Basculer le thème"
+    }
+  },
+  "notifications": {
+    "eventbus": {
+      "title": "EventBus",
+      "connected": "EventBus connecté avec succès",
+      "disconnected": "EventBus déconnecté",
+      "error": "Erreur de connexion EventBus"
+    },
+    "device": {
+      "title": "Device",
+      "plugged": "Device branché avec succès",
+      "unplugged": "Device débranché",
+      "failure": "Échec du device"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "actions": "Actions"
+  },
+  "home": {
+    "title": "Bienvenue dans Studio",
+    "subtitle": "Créez et visualisez vos diagrammes",
+    "description": "Une application moderne pour la création et la visualisation de diagrammes de flux.",
+    "features": {
+      "title": "Fonctionnalités",
+      "editor": "Éditeur de diagrammes avancé",
+      "library": "Bibliothèque de modèles",
+      "viewer": "Visualiseur interactif",
+      "export": "Export multi-format"
+    },
+    "gettingStarted": {
+      "title": "Pour commencer",
+      "step1": "Parcourez la bibliothèque",
+      "step2": "Créez un nouveau diagramme",
+      "step3": "Utilisez l'éditeur",
+      "step4": "Visualisez vos créations"
+    }
+  },
+  "library": {
+    "title": "Bibliothèque",
+    "loading": "Chargement de la bibliothèque...",
+    "error": {
+      "title": "Erreur de chargement",
+      "message": "Impossible de charger la bibliothèque",
+      "retry": "Réessayer",
+      "dismiss": "Ignorer"
+    },
+    "empty": {
+      "title": "Bibliothèque vide",
+      "message": "Aucun pack trouvé dans la bibliothèque",
+      "hint": "Commencez par créer votre premier diagramme"
+    },
+    "search": {
+      "label": "Rechercher",
+      "placeholder": "Rechercher dans la bibliothèque..."
+    },
+    "sort": {
+      "label": "Trier par",
+      "name": "Nom",
+      "date": "Date",
+      "popularity": "Popularité"
+    },
+    "order": {
+      "label": "Ordre",
+      "ascending": "Croissant",
+      "descending": "Décroissant"
+    },
+    "actions": {
+      "create": "Créer",
+      "import": "Importer"
+    },
+    "pack": {
+      "by": "Par",
+      "created": "Créé le",
+      "open": "Ouvrir",
+      "details": "Détails"
+    }
+  },
+  "editor": {
+    "title": "Éditeur",
+    "untitled": "Sans titre",
+    "modified": "Modifié",
+    "saving": "Sauvegarde en cours...",
+    "actions": {
+      "save": "Sauvegarder",
+      "saveAs": "Sauvegarder sous",
+      "export": "Exporter",
+      "undo": "Annuler",
+      "redo": "Rétablir"
+    },
+    "palette": {
+      "title": "Palette",
+      "START": "Début",
+      "END": "Fin",
+      "DECISION": "Décision",
+      "PROCESS": "Processus",
+      "INPUT": "Entrée",
+      "OUTPUT": "Sortie"
+    },
+    "properties": {
+      "title": "Propriétés",
+      "type": "Type",
+      "position": "Position",
+      "label": "Libellé"
+    },
+    "empty": {
+      "message": "Aucun nœud dans le diagramme",
+      "hint": "Utilisez la palette pour ajouter des éléments"
+    }
+  },
+  "viewer": {
+    "title": "Visualiseur",
+    "controls": {
+      "play": "Lecture",
+      "pause": "Pause",
+      "stop": "Arrêt"
+    },
+    "progress": {
+      "step": "Étape"
+    },
+    "empty": {
+      "message": "Aucun diagramme à visualiser",
+      "hint": "Ouvrez un diagramme depuis la bibliothèque"
+    },
+    "current": {
+      "step": "Étape actuelle",
+      "type": "Type"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "actions": {
+      "export": "Exporter",
+      "import": "Importer",
+      "reset": "Réinitialiser"
+    },
+    "tabs": {
+      "general": "Général",
+      "appearance": "Apparence",
+      "editor": "Éditeur",
+      "notifications": "Notifications",
+      "about": "À propos"
+    },
+    "general": {
+      "title": "Paramètres généraux",
+      "language": "Langue",
+      "theme": "Thème"
+    },
+    "theme": {
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "appearance": {
+      "title": "Apparence",
+      "info": "Personnalisez l'apparence de l'application",
+      "animations": "Animations",
+      "animations.description": "Activer les animations et transitions"
+    },
+    "editor": {
+      "title": "Éditeur",
+      "autoSave": "Sauvegarde automatique",
+      "autoSave.description": "Sauvegarder automatiquement les modifications",
+      "autoSaveInterval": "Intervalle de sauvegarde",
+      "seconds": "secondes",
+      "minute": "minute",
+      "minutes": "minutes"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "announceOptOut": "Désactiver les annonces",
+      "announceOptOut.description": "Ne pas afficher les annonces système",
+      "allowEnriched": "Autoriser le contenu enrichi",
+      "allowEnriched.description": "Autoriser les notifications avec contenu enrichi"
+    },
+    "about": {
+      "title": "À propos",
+      "application": "Studio",
+      "description": "Application moderne pour la création et la visualisation de diagrammes de flux.",
+      "license": "Licence",
+      "license.description": "Cette application est distribuée sous licence Mozilla Public License 2.0.",
+      "copyright": "© 2024 Studio. Tous droits réservés."
+    },
+    "reset": {
+      "title": "Réinitialiser les paramètres",
+      "warning": "Cette action est irréversible",
+      "confirmation": "Êtes-vous sûr de vouloir réinitialiser tous les paramètres ?",
+      "confirm": "Réinitialiser"
+    }
+  }
+} 
